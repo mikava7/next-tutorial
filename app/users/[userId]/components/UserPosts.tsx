@@ -4,7 +4,7 @@ type Props = {
 
 export default async function UserPosts({ promise }: Props) {
   const posts = await promise;
-  console.log("posts in UserPosts", posts);
+  // console.log("posts in UserPosts", posts);
   const content = posts.map((post) => {
     return (
       <article key={post.id + post.userId}>

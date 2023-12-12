@@ -1,14 +1,36 @@
 import React from "react";
 import getUser from "@/app/lib/getUser";
 import getUserPost from "@/app/lib/getUserPost";
+import getAllUsers from "@/app/lib/getAllUsers";
 import { Suspense } from "react";
 import Loading from "../../about/loading";
 import UserPosts from "./components/UserPosts";
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+
 type Params = {
   params: {
     userId: string;
   };
 };
+
+export async function generateMetadata({
+  params: { userId },
+}: Params): Promise<Metadata> {
+  const userData: Promise<User> = getUser(userId);
+  const user: User = await userData;
+
+  if (!user) {
+    return {
+      title: "User not found ",
+    };
+  }
+
+  return {
+    title: user.name,
+    description: `This is the page of ${user.name}`,
+  };
+}
 
 async function UserPage({ params: { userId } }: Params) {
   const userData: Promise<User> = getUser(userId);
@@ -18,10 +40,10 @@ async function UserPage({ params: { userId } }: Params) {
   //   const [user, userPosts] = await Promise.all([userData, userPostsData]);
 
   const user = await userData;
-  const userPosts = await userPostsData;
 
-  console.log("user", user);
-  console.log("userPosts", userPosts);
+  if (!user) {
+    return notFound();
+  }
 
   return (
     <>
@@ -35,3 +57,12 @@ async function UserPage({ params: { userId } }: Params) {
 }
 
 export default UserPage;
+
+export async function generateStaticParams() {
+  const usersData: Promise<User[]> = getAllUsers();
+  const users = await usersData;
+
+  return users.map((user) => ({
+    userId: user.id.toString(),
+  }));
+}
