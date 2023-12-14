@@ -54,7 +54,7 @@ export default function Feedback() {
   const content = (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col mx-auto max-w-3xl p-6"
+      className="flex flex-col mx-auto max-w-3xl p-6 dark:text-white/90"
     >
       <h1 className="text-4xl mb-4">Contact Us</h1>
 
@@ -67,7 +67,7 @@ export default function Feedback() {
         id="name"
         name="name"
         placeholder="Jane"
-        pattern="([A-Z])[\w+.]{1,}"
+        // pattern="([A-Z])[\w+.]{1,}"
         value={data.name}
         onChange={handleChange}
         autoFocus
