@@ -8,7 +8,7 @@ export async function GET() {
 
   const todos: Todo[] = await res.json();
   const remaining = limiter.removeTokens(1);
-  console.log("remaining", remaining);
+  // console.log("remaining", remaining);
   return NextResponse.json(todos);
 }
 
